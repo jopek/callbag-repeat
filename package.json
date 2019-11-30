@@ -1,0 +1,21 @@
+{
+  "name": "callbag-repeat",
+  "version": "0.1.0",
+  "description": "callbag operator to repeat/restart stream by repeating handshake.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test.js"
+  },
+  "keywords": [
+    "callbag",
+    "repeat",
+    "subscription"
+  ],
+  "author": "Alexander Blüm",
+  "license": "ISC",
+  "devDependencies": {
+    "callbag-basics": "^3.2.0",
+    "callbag-from-iter": "^1.2.0",
+    "tape": "^4.11.0"
+  }
+}
