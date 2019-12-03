@@ -11,11 +11,15 @@
     "repeat",
     "subscription"
   ],
+    "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jopek/callbag-repeat.git"
+  },
   "author": "Alexander Blüm",
   "license": "ISC",
   "devDependencies": {
     "callbag-basics": "^3.2.0",
-    "callbag-from-iter": "^1.2.0",
+    "callbag-last": "^1.1.4",
     "tape": "^4.11.0"
   }
 }

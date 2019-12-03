@@ -1,41 +1,62 @@
-const test = require('tape');
-const repeat = require('./');
-const fromIter = require('callbag-from-iter');
+const test = require("tape");
+const repeat = require("./");
 
-test('it creates a source with a single lazyly evaluated value then completes', t => {
-  t.plan(8);
-  let value;
-  const downwardsExpectedType = [
-    [0, 'function'],
-    [1, 'string'],
-    [2, 'undefined'],
-  ];
-  const downwardsExpected = [12, 45, 12, 45, 12];
+const { fromIter, pipe, take, scan, forEach } = require("callbag-basics");
+const last = require("callbag-last");
+
+test("output of parametrized repetition should be as expected", t => {
+  t.plan(22);
   const input = [12, 45];
+  const expectedTypes = [
+    [0, "function"],
+    [1, "number"],
+    [1, "number"],
+    [1, "number"],
+    [1, "number"],
+    [1, "number"],
+    [1, "number"],
+    [2, "undefined"]
+  ];
+  const expectedOutput = [12, 45, 12, 45, 12, 45];
 
-  function sink(type, data) {
-    const et = downwardsExpectedType.shift();
-    t.equals(type, et[0], 'downwards type is expected: ' + et[0]);
-    t.equals(typeof data, et[1], 'downwards data type is expected: ' + et[1]);
+  function consumer(type, data) {
+    const et = expectedTypes.shift();
+    t.equals(type, et[0], "expected type is " + et[0]);
+    t.equals(typeof data, et[1], "expected data type is " + et[1]);
+
     if (type === 0) {
-      sink.ask = data;
-      sink.count = 0;
+      consumer.ask = data;
     } else if (type === 1) {
-      const e = downwardsExpected.shift();
-      t.equals(data, e, 'downwards data is expected: ' + e);
+      t.equals(data, expectedOutput.shift());
     }
-    if (type === 0 || type === 1) sink.ask(1);
+    if (type === 0 || type === 1) consumer.ask(1);
   }
 
-  const src = fromIter(input)(repeat)
+  repeat(2)(fromIter(input))(0, consumer);
 
-  setTimeout(() => src(0, sink), 5);
-
-  value = 'one value';
-
-  setTimeout(() => {
-    t.pass('nothing else happens');
-    t.end();
-  }, 10);
+  t.end();
 });
 
+test("unparametrized repetition results in endless repetition", t => {
+  pipe(
+    fromIter("abc"),
+    repeat(1),
+    take(100),
+    scan((prev, x) => prev.concat(x), []),
+    last(),
+    forEach(v => {
+      t.equals(
+        v.length,
+        100,
+        "grabbing 100 elements from repitition is 100 elements"
+      );
+      const items = v.reduce((prev, val) => {
+        if (prev[val]) prev[val]++;
+        else prev[val] = 1;
+        return prev;
+      }, {});
+      t.deepEquals(items, { a: 34, b: 33, c: 33 });
+    })
+  );
+  t.end();
+});
