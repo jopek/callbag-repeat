@@ -29,6 +29,8 @@ pipe(
 Omiting the parameter means infinite repeats. The stream is stopped by either the downstream consumer with a `type=2` call or by the upstream producer with an error, `type=2` and `data!=undefined`.
 
 ```
+const { fromIter, pipe, take, forEach } = require("callbag-basics");
+
 pipe(
   fromIter("abc"),
   repeat(),
@@ -38,5 +40,20 @@ pipe(
                                // c
                                // 96 emissions later...
                                // A
+)
+```
+
+Endless loop of a #ball element moving up and down with sine easing in 500ms intervals.
+```
+const { fromIter, pipe, take, forEach } = require("callbag-basics");
+const durationProgress = require("callbag-duration-progress");
+const ball = window.document.getElementById("ball");
+
+pipe(
+  durationProgress(500),
+  map(t => (1 + Math.sin(Math.PI * t - Math.PI / 2)) / 2),
+  map(y => y * 300),
+  repeat(),
+  forEach(y => ball.style.transform = `translate3d(-35px, ${y}px, 0)` )
 )
 ```
