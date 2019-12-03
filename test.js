@@ -40,7 +40,7 @@ test("output of parametrized repetition should be as expected", t => {
 test("unparametrized repetition results in endless repetition", t => {
   pipe(
     fromIter("abc"),
-    repeat(1),
+    repeat(100),
     take(100),
     scan((prev, x) => prev.concat(x), []),
     last(),
