@@ -3,11 +3,11 @@ Callbag operator that repeats/restarts the source stream by repeating the source
 
 The `repeat` operator can be called with `repeat(n)` and without `repeat()` parameters.
 
-Code is almost the same as https://github.com/Andarist/callbag-retry. The difference is that the input stream error ends the stream, while input stream end triggers a repeat.
+Code is based on https://github.com/Andarist/callbag-retry. The difference is that the input stream error ends the stream, while input stream end triggers a repeat.
 
 
 ## parametrized
-`n = 0` means no repitition: input stream = output stream. `n = 1` is one repitition (one restarted once or more), `n = 2` are two repititions, and so on... 
+`n = 0` means no repitition: input stream = output stream. `n = 1` is one repitition after source ended, `n = 2` are two repititions, and so on... 
 
 ```
 pipe(
