@@ -1,6 +1,6 @@
 {
   "name": "callbag-repeat",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "callbag operator to repeat/restart stream by repeating handshake.",
   "main": "index.js",
   "scripts": {
