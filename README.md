@@ -1,15 +1,23 @@
 # callbag-repeat
+
 Callbag operator that repeats/restarts the source stream by repeating the source handshake when source stream finished without error.
 
 The `repeat` operator can be called with `repeat(n)` and without `repeat()` parameters.
 
-Code is based on https://github.com/Andarist/callbag-retry. The difference is that the input stream error ends the stream, while input stream end triggers a repeat.
+Code is based on https://github.com/Andarist/callbag-retry.
+The difference is that the input stream error ends the stream, while input stream end triggers a repeat.
 
+`npm install callbag-repeat`
 
 ## parametrized
-`n = 0` means no repitition: input stream = output stream. `n = 1` is one repitition after source ended, `n = 2` are two repititions, and so on... 
+
+`n = 0` means no repitition: input stream = output stream.
+`n = 1` is one repitition after source ended, `n = 2` are two repititions, and so on...
 
 ```
+const repeat = require("callbag-repeat");
+const { fromIter, pipe, forEach } = require("callbag-basics");
+
 pipe(
   fromIter("Abc"),
   repeat(2),
@@ -26,9 +34,12 @@ pipe(
 ```
 
 ## unparametrized
-Omiting the parameter means infinite repeats. The stream is stopped by either the downstream consumer with a `type=2` call or by the upstream producer with an error, `type=2` and `data!=undefined`.
+
+Omiting the parameter means infinite repeats.
+The stream is stopped by either the downstream consumer with a `type=2` call or by the upstream producer with an error, `type=2` and `data!=undefined`.
 
 ```
+const repeat = require("callbag-repeat");
 const { fromIter, pipe, take, forEach } = require("callbag-basics");
 
 pipe(
@@ -43,8 +54,10 @@ pipe(
 )
 ```
 
-Endless loop of a #ball element moving up and down with sine easing in 500ms intervals.
+Endless loop of a #ball element moving up and down with sine easing in 500ms intervals:
+
 ```
+const repeat = require("callbag-repeat");
 const { fromIter, pipe, take, forEach } = require("callbag-basics");
 const durationProgress = require("callbag-duration-progress");
 const ball = window.document.getElementById("ball");
